@@ -3,32 +3,43 @@ import { parse } from "url";
 import { WebSocketServer } from "ws";
 import { Socket } from 'net';
 
+
 //connection to pump
 let ip = '192.168.244.233';
 let port = 5000;
 
-let client = new Socket();
-client.connect(port, ip, function() {
-	console.log('Connected');
-});
+// Get data from remote pump
+// let client = new Socket();
+// client.connect(port, ip, function() {
+// 	console.log('Connected');
+// });
 
-client.on('data', function(data) {
-	let time = new Date();
-	console.log(time.toLocaleTimeString() + " " + data);
-  let msgData = data.toString().split(' ')[0];
-  let message = { date: time, sensorData: msgData};
+// client.on('data', function(data) {
+// 	let time = new Date();
+// 	console.log(time.toLocaleTimeString() + " " + data);
+//   let msgData = data.toString().split(' ')[0];
+//   let message = { date: time, sensorData: msgData};
+//   const jsonMessage = JSON.stringify(message);
+//   sendMessage(jsonMessage);
+// });
+
+// client.on('error', function(e) {
+// 	console.log('Error:\n' + e);
+// })
+
+// client.on('close', function() {
+// 	console.log('Connection closed');
+// });
+
+
+// faker data
+setInterval(function(){ 
+  let time = new Date();
+  let number = (Math.random()*100) + 1;
+  let message = { date: time, sensorData: number};
   const jsonMessage = JSON.stringify(message);
-  sendMessage(jsonMessage);
-});
-
-client.on('error', function(e) {
-	console.log('Error:\n' + e);
-})
-
-client.on('close', function() {
-	console.log('Connection closed');
-});
-
+  sendMessage(jsonMessage); 
+}, 1000);
 // Create the https server
 const server = createServer();
 // Create instance of the websocket server
