@@ -10,15 +10,15 @@ function App() {
   const [data, setData] = useState([]);
   // don't use state
   const chartData = {
-    labels: data.map((data) => data.id), 
+    labels: data.map((data) => data.id),
     datasets: [
       {
         label: "Users Gained ",
         data: data.map((data) => data.sensorData),
         borderColor: "black",
-        borderWidth: 2
-      }
-    ]
+        borderWidth: 2,
+      },
+    ],
   };
   useEffect(() => {
     //Send request to our websocket server using the "/request" path
@@ -37,20 +37,7 @@ function App() {
       ];
       console.log(newDataArray);
       setData((currentData) => limitData(currentData, message));
-      console.log(`Data:: ${data}`);
-      // setChartData({  
-      //   labels: data.map((data) => data.id), 
-      //   datasets: [
-      //     {
-      //       label: "Users Gained ",
-      //       data: data.map((data) => data.sensorData),
-      //       borderColor: "black",
-      //       borderWidth: 2
-      //     }
-      //   ]
-  
-      // });
-    }
+    };
     ws.current.onclose = (ev) => {
       console.log("Client socket close!");
     };
@@ -74,8 +61,8 @@ function App() {
       console.log("Cleaning up! ");
       ws.current.close();
     };
-  },[]);
-  
+  }, []);
+
   function LineChart({ chartData }) {
     return (
       <div className="chart-container">
@@ -86,25 +73,35 @@ function App() {
             plugins: {
               title: {
                 display: true,
-                text: "Users Gained between 2016-2020"
+                text: "Users Gained between 2016-2020",
               },
               legend: {
-                display: false
-              }
-            }
+                display: false,
+              },
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                max: 1000,
+                min: 0,
+              },
+              y: {
+                beginAtZero: false,
+                max: 150,
+                min: 0,
+              },
+            },
           }}
         />
       </div>
-    )
+    );
   }
 
   return (
     <div>
       <LineChart chartData={chartData} />
     </div>
-  )
+  );
 }
 
-
-
-export default App
+export default App;
